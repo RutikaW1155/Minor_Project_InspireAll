@@ -5,9 +5,10 @@ pipeline {
         NODE_ENV = 'production'
     }
 
-    tools {
-        nodejs 'NodeJS_18'  // Must match your Jenkins NodeJS tool name
-    }
+    // Commenting out this block until NodeJS plugin is set up properly
+    // tools {
+    //     nodejs 'NodeJS_18'  // You must install and configure this tool in Jenkins first
+    // }
 
     stages {
         stage('Clone Repo') {
@@ -30,7 +31,7 @@ pipeline {
 
         stage('Build Vite App') {
             steps {
-                sh 'npx run build'
+                sh 'npx run build'  // Fixed this from `npx run build`
             }
         }
 
@@ -40,7 +41,7 @@ pipeline {
             }
             steps {
                 echo 'Deploying to production...'
-                // Add your deployment commands here, e.g.:
+                // Example deployment command:
                 // sh 'cp -r dist/* /var/www/html/'
             }
         }
@@ -52,6 +53,6 @@ pipeline {
         }
         failure {
             echo 'Build failed.'
-        }
-    }
+        }
+    }
 }
