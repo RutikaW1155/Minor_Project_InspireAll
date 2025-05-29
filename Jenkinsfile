@@ -2,71 +2,61 @@ pipeline {
     agent any
 
     environment {
-        NODE_ENV = 'production'
-    }
-
-    tools {
-        nodejs 'NodeJS_20'  // Make sure this matches the name in Jenkins tool config
+        DOCKER_HOST_IP = "13.61.120.67"
+        DOCKER_USER = "ubuntu"
+        DOCKER_APP_DIR = "inspire-app"
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/RutikaW1155/Minor_Project_InspireAll.git'
             }
         }
 
-        stage('Verify Node & npm') {
-            steps {
-                sh 'node -v'
-                sh 'npm -v'
-            }
-        }
+        stage('Build Docker Image') {
+    steps {
+        withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'KEY')]) {
+            sh """
+                ssh -i \$KEY -o StrictHostKeyChecking=no ${DOCKER_USER}@${DOCKER_HOST_IP} '
+                    rm -rf ${DOCKER_APP_DIR} && mkdir -p ${DOCKER_APP_DIR}
+                '
 
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
+                scp -i \$KEY -o StrictHostKeyChecking=no -r \
+                    src public \
+                    Dockerfile package.json package-lock.json vite.config.js index.html eslint.config.js\
+                    ${DOCKER_USER}@${DOCKER_HOST_IP}:${DOCKER_APP_DIR}/
 
-        stage('Run Tests') {
+                ssh -i \$KEY -o StrictHostKeyChecking=no ${DOCKER_USER}@${DOCKER_HOST_IP} '
+                    cd ${DOCKER_APP_DIR} &&
+                    docker build -t inspire-app .
+                '
+            """
+        }
+    }
+}
+
+
+        stage('Run Container') {
             steps {
-                script {
-                    // Run tests only if test script is defined in package.json
-                    def hasTests = sh(script: 'npm run | grep -q "test"', returnStatus: true) == 0
-                    if (hasTests) {
-                        sh 'npm run test'
-                    } else {
-                        echo 'No tests defined in package.json.'
-                    }
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'KEY')]) {
+                    sh """
+                        ssh -i \$KEY -o StrictHostKeyChecking=no ${DOCKER_USER}@${DOCKER_HOST_IP} '
+                            docker rm -f inspire-container || true &&
+                            docker run -d -p 3000:3000 --name inspire-container inspire-app
+                        '
+                    """
                 }
             }
         }
 
-        stage('Build Vite App') {
+        stage('Selenium Tests') {
             steps {
-                sh 'npx run build'
-            }
-        }
-
-        stage('Deploy to Production') {
-            when {
-                branch 'main'
-            }
-            steps {
-                echo 'Deploying to production server...'
-                // Example placeholder - replace with actual deployment command
-                // sh 'cp -r dist/* /var/www/html/'
+                sh """
+                    echo "Running Selenium tests..."
+                    # TODO: Add your Selenium test command here
+                """
             }
         }
     }
-
-    post {
-        success {
-            echo '✅ Build and deployment successful.'
-        }
-        failure {
-            echo '❌ Build failed.'
-        }
-    }
 }
