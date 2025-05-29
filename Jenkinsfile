@@ -3,10 +3,17 @@ pipeline {
 
     environment {
         NODE_ENV = 'production'
+        IMAGE_NAME = 'inspireall-app'
+        IMAGE_TAG = 'latest'
+
+        // Docker deployment configuration
+        DOCKER_HOST_IP = '13.53.109.186'
+        DOCKER_USER = 'ubuntu'
+        DOCKER_APP_DIR = 'inspireall-app'
     }
 
     tools {
-        nodejs 'NodeJS_18'  // Must match your Jenkins NodeJS tool name
+        nodejs 'NodeJS_18'  // Make sure this matches Jenkins config
     }
 
     stages {
@@ -30,28 +37,46 @@ pipeline {
 
         stage('Build Vite App') {
             steps {
-                sh 'npx run build'
+                sh 'npx vite build'
             }
         }
 
-        stage('Deploy (Optional)') {
+        stage('Deploy with Docker') {
             when {
                 branch 'main'
             }
             steps {
-                echo 'Deploying to production...'
-                // Add your deployment commands here
-                // Example: sh 'cp -r dist/* /var/www/html/'
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'KEY')]) {
+                    sh """
+                        # Prepare remote directory
+                        ssh -i \$KEY -o StrictHostKeyChecking=no ${DOCKER_USER}@${DOCKER_HOST_IP} '
+                            rm -rf ${DOCKER_APP_DIR} && mkdir -p ${DOCKER_APP_DIR}
+                        '
+
+                        # Copy necessary files to remote EC2
+                        scp -i \$KEY -o StrictHostKeyChecking=no -r \
+                            dist Dockerfile package.json package-lock.json \
+                            ${DOCKER_USER}@${DOCKER_HOST_IP}:${DOCKER_APP_DIR}/
+
+                        # Build and run Docker container remotely
+                        ssh -i \$KEY -o StrictHostKeyChecking=no ${DOCKER_USER}@${DOCKER_HOST_IP} '
+                            cd ${DOCKER_APP_DIR} &&
+                            docker rm -f ${IMAGE_NAME}-container || true &&
+                            docker build -t ${IMAGE_NAME}:${IMAGE_TAG} . &&
+                            docker run -d -p 3000:3000 --name ${IMAGE_NAME}-container ${IMAGE_NAME}:${IMAGE_TAG}
+                        '
+                    """
+                }
             }
         }
     }
 
     post {
         success {
-            echo 'Build and deployment successful.'
+            echo 'Build, Docker image creation, and deployment successful.'
         }
         failure {
-            echo 'Build failed.'
+            echo 'Build or deployment failed.'
         }
     }
 }
