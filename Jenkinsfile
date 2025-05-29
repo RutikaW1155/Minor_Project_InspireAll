@@ -30,7 +30,7 @@ pipeline {
 
         stage('Build Vite App') {
             steps {
-                sh 'npx run build'
+                sh 'npm run build'
             }
         }
 
@@ -52,6 +52,6 @@ pipeline {
         }
         failure {
             echo 'Build failed.'
-        }
-    }
+        }
+    }
 }
