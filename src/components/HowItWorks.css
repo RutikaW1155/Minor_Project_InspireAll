@@ -1,0 +1,105 @@
+.how-it-works {
+  background-color: #0d1117;
+  color: white;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.section-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.section-description {
+  font-size: 18px;
+  color: #ccc;
+  margin-bottom: 40px;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #161b22;
+  border: 1px solid #2c313a;
+  border-radius: 12px;
+  padding: 20px;
+  width: 450px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.step-circle {
+  background-color: #7c3aed;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.step {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.card-description {
+  font-size: 16px;
+  color: #ccc;
+  margin-bottom: 16px;
+}
+
+.card-image-placeholder {
+  width: 408px;
+  height: 150px;
+  margin: 0 auto 1rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-image {
+  width: 300px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px 0 rgba(124, 58, 237, 0.08);
+  background: #f3f4f6;
+}
+
+.btn.purple {
+  background-color: #7c3aed;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 24px;
+}
+
+.btn.purple:hover {
+  background-color: #7c3aed;
+}

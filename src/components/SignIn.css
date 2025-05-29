@@ -1,0 +1,136 @@
+/* SignIn.css */
+:root {
+    --primary-color: #9c5fff;
+    --primary-hover: #8242eb;
+    --secondary-color: #1a1a1a;
+    --accent-color: #f5f5f5;
+    --error-color: #ff4545;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --text-dark: #333333;
+    --text-light: #ffffff;
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+  }
+  
+  .SignIn-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--secondary-color);
+    padding: 2rem;
+    color: var(--text-light);
+  }
+  
+  .SignIn-page h1 {
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-align: center;
+  }
+  
+  .login-form {
+    width: 100%;
+    max-width: 420px;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px var(--shadow-color);
+  }
+  
+  .login-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .login-form input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(156, 95, 255, 0.3);
+  }
+  
+  .login-form button {
+    width: 100%;
+    padding: 0.9rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .login-form button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(156, 95, 255, 0.4);
+  }
+  
+  .login-form button:active {
+    transform: translateY(0);
+  }
+  
+  .signup-redirect {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  
+  .signup-link {
+    color: var(--primary-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .signup-link:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .SignIn-page h1 {
+      font-size: 1.8rem;
+    }
+  
+    .login-form {
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .SignIn-page {
+      padding: 1.5rem;
+    }
+  
+    .SignIn-page h1 {
+      font-size: 1.5rem;
+    }
+  
+    .login-form {
+      padding: 1.25rem;
+    }
+  }

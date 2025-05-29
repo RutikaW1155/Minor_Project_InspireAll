@@ -1,0 +1,208 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0d0e10;
+    padding: 16px 24px;
+    font-family: 'Inter', sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+  
+  .logo-section {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    font-size: 40px;
+    font-weight: 700;
+    transition: color 0.3s;
+    margin-left: 55px; /* Adjusted for alignment */
+  }
+  
+  .logo-icon {
+    height: 28px;
+    margin-right: 8px;
+  }
+  
+  .logo-text {
+    font-weight: 600;
+    font-size: 30px;
+    display: flex;
+  }
+  
+  .logo-inspire {
+    /* color: white; */
+    color: #7c3aed; 
+  }
+  
+  .logo-all {
+    /* color: #6b21a8;  */
+    color: white;
+
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px; /* Space between links */
+    margin-left: auto; /* Push links to the right */
+    margin-right: 30px; /* Space between links and Sign in/Sign up */
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  .nav-links a:hover {
+    color: #ccc;
+  }
+  
+  .desktop-auth {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .signin-link {
+    color: #e2e2e2;
+    text-decoration: none;
+  }
+  
+  .signin-btn {
+    background: transparent;
+    color: #7c3aed;
+    border: 1.5px solid #7c3aed;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    margin-right: 10px;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+  }
+
+  .signin-btn:hover {
+    background: #7c3aed;
+    color: #fff;
+    border: 1.5px solid #7c3aed;
+  }
+
+  .signup-btn {
+    background: linear-gradient(90deg, #7c3aed 60%, #4f46e5 100%);
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px 0 rgba(124, 58, 237, 0.10);
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .signup-btn:hover {
+    background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+    color: #fff;
+  }
+  
+  .menu-icon {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 4px;
+  }
+  
+  .menu-icon .bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+  }
+  
+  /* Mobile Styles */
+  @media screen and (max-width: 768px) {
+    .nav-links {
+      position: absolute;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background-color: #0d0e10;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      display: none;
+    }
+  
+    .nav-links.open {
+      display: flex;
+    }
+  
+    .desktop-auth {
+      display: none;
+    }
+  
+    .mobile-auth {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+  
+    .menu-icon {
+      display: flex;
+    }
+
+    .translate-section {
+      margin: 10px 0;
+      width: 90vw;
+      justify-content: center;
+      height: auto;
+      background: #18181b;
+    }
+  }
+
+  .translate-section {
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding: 0 14px;
+    height: 40px;
+    background: #18181b;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.06);
+    border: 1px solid #23232b;
+    transition: box-shadow 0.2s, border 0.2s;
+  }
+
+  .translate-section:hover {
+    box-shadow: 0 4px 16px 0 rgba(124, 58, 237, 0.10);
+    border: 1.5px solid #7c3aed;
+  }
+
+  .translate-section select,
+  .translate-section .goog-te-combo {
+    background: transparent;
+    color: #e2e2e2;
+    border: none;
+    font-size: 15px;
+    outline: none;
+    padding: 4px 8px;
+  }
+
+  .translate-section select:focus,
+  .translate-section .goog-te-combo:focus {
+    background: #23232b;
+  }
