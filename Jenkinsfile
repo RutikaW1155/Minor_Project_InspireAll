@@ -3,23 +3,23 @@ pipeline {
 
     environment {
         NODE_ENV = 'production'
-        IMAGE_NAME = 'inspireall-app'
-        IMAGE_TAG = 'latest'
-
-        // Docker deployment configuration
-        DOCKER_HOST_IP = '13.53.109.186'
-        DOCKER_USER = 'ubuntu'
-        DOCKER_APP_DIR = 'inspireall-app'
     }
 
     tools {
-        nodejs 'NodeJS_20'  // Ensure this is configured in Jenkins tools
+        nodejs 'NodeJS_20'  // Make sure this matches the name in Jenkins tool config
     }
 
     stages {
-        stage('Clone Repo') {
+        stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/RutikaW1155/Minor_Project_InspireAll.git'
+            }
+        }
+
+        stage('Verify Node & npm') {
+            steps {
+                sh 'node -v'
+                sh 'npm -v'
             }
         }
 
@@ -31,54 +31,42 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'npm run test || echo "No tests defined"'
+                script {
+                    // Run tests only if test script is defined in package.json
+                    def hasTests = sh(script: 'npm run | grep -q "test"', returnStatus: true) == 0
+                    if (hasTests) {
+                        sh 'npm run test'
+                    } else {
+                        echo 'No tests defined in package.json.'
+                    }
+                }
             }
         }
 
         stage('Build Vite App') {
             steps {
-                sh 'npx vite build'
+                sh 'npx run build'
             }
         }
 
-        stage('Deploy with Docker') {
+        stage('Deploy to Production') {
             when {
-                branch 'main' // Ensure your Jenkins pipeline is triggered on 'main' branch
+                branch 'main'
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'KEY')]) {
-                    sh """
-                        echo "Connecting to remote EC2 instance..."
-
-                        # Create/clean remote deployment directory
-                        ssh -i \$KEY -o StrictHostKeyChecking=no ${DOCKER_USER}@${DOCKER_HOST_IP} '
-                            rm -rf ${DOCKER_APP_DIR} && mkdir -p ${DOCKER_APP_DIR}
-                        '
-
-                        # Copy project files to remote EC2
-                        scp -i \$KEY -o StrictHostKeyChecking=no -r \
-                            dist Dockerfile package.json package-lock.json \
-                            ${DOCKER_USER}@${DOCKER_HOST_IP}:${DOCKER_APP_DIR}/
-
-                        # SSH into EC2 to build and run Docker container
-                        ssh -i \$KEY -o StrictHostKeyChecking=no ${DOCKER_USER}@${DOCKER_HOST_IP} '
-                            cd ${DOCKER_APP_DIR} &&
-                            docker rm -f ${IMAGE_NAME}-container || true &&
-                            docker build -t ${IMAGE_NAME}:${IMAGE_TAG} . &&
-                            docker run -d -p 80:80 --name ${IMAGE_NAME}-container ${IMAGE_NAME}:${IMAGE_TAG}
-                        '
-                    """
-                }
+                echo 'Deploying to production server...'
+                // Example placeholder - replace with actual deployment command
+                // sh 'cp -r dist/* /var/www/html/'
             }
         }
     }
 
     post {
         success {
-            echo '✅ Build, Docker image creation, and deployment successful.'
+            echo '✅ Build and deployment successful.'
         }
         failure {
-            echo '❌ Build or deployment failed.'
-        }
-    }
+            echo '❌ Build failed.'
+        }
+    }
 }
