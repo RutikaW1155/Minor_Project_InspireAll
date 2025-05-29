@@ -4,13 +4,16 @@ FROM node:20-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy only package files first (for layer caching)
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Remove any previously cached node_modules or lock file (optional safety)
+RUN rm -rf node_modules package-lock.json
 
-# Copy project files
+# Install dependencies cleanly (better for CI/CD)
+RUN npm ci
+
+# Copy the rest of the project files
 COPY . .
 
 # Build the app
