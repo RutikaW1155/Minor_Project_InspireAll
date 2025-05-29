@@ -13,7 +13,7 @@ pipeline {
     }
 
     tools {
-        nodejs 'NodeJS_18'  // Ensure this is configured in Jenkins tools
+        nodejs 'NodeJS_20'  // Ensure this is configured in Jenkins tools
     }
 
     stages {
