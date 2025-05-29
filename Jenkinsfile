@@ -5,15 +5,21 @@ pipeline {
         NODE_ENV = 'production'
     }
 
-    // Commenting out this block until NodeJS plugin is set up properly
-    // tools {
-    //     nodejs 'NodeJS_18'  // You must install and configure this tool in Jenkins first
-    // }
+    tools {
+        nodejs 'NodeJS_18'  // Make sure this matches the name in Jenkins tool config
+    }
 
     stages {
-        stage('Clone Repo') {
+        stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/RutikaW1155/Minor_Project_InspireAll.git'
+            }
+        }
+
+        stage('Verify Node & npm') {
+            steps {
+                sh 'node -v'
+                sh 'npm -v'
             }
         }
 
@@ -25,23 +31,31 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'npm run test || echo "No tests defined"'
+                script {
+                    // Run tests only if test script is defined in package.json
+                    def hasTests = sh(script: 'npm run | grep -q "test"', returnStatus: true) == 0
+                    if (hasTests) {
+                        sh 'npm run test'
+                    } else {
+                        echo 'No tests defined in package.json.'
+                    }
+                }
             }
         }
 
         stage('Build Vite App') {
             steps {
-                sh 'npx run build'  // Fixed this from `npx run build`
+                sh 'npm run build'
             }
         }
 
-        stage('Deploy (Optional)') {
+        stage('Deploy to Production') {
             when {
                 branch 'main'
             }
             steps {
-                echo 'Deploying to production...'
-                // Example deployment command:
+                echo 'Deploying to production server...'
+                // Example placeholder - replace with actual deployment command
                 // sh 'cp -r dist/* /var/www/html/'
             }
         }
@@ -49,10 +63,10 @@ pipeline {
 
     post {
         success {
-            echo 'Build and deployment successful.'
+            echo '✅ Build and deployment successful.'
         }
         failure {
-            echo 'Build failed.'
+            echo '❌ Build failed.'
         }
     }
 }
