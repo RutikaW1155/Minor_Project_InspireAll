@@ -3,12 +3,10 @@ pipeline {
 
     environment {
         NODE_ENV = 'production'
-        IMAGE_NAME = 'inspireall-app'
-        IMAGE_TAG = 'latest'
     }
 
     tools {
-        nodejs 'NodeJS_20'  // Updated to Node 20
+        nodejs 'NodeJS_18'  // Must match your Jenkins NodeJS tool name
     }
 
     stages {
@@ -26,21 +24,13 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // Will not fail pipeline even if test script is missing
                 sh 'npm run test || echo "No tests defined"'
             }
         }
 
         stage('Build Vite App') {
             steps {
-                // Ensure Vite is installed or this will fail
-                sh 'npx vite build'
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
+                sh 'npx run build'
             }
         }
 
@@ -50,14 +40,15 @@ pipeline {
             }
             steps {
                 echo 'Deploying to production...'
-                // Example: sh 'docker run -d -p 80:80 $IMAGE_NAME:$IMAGE_TAG'
+                // Add your deployment commands here
+                // Example: sh 'cp -r dist/* /var/www/html/'
             }
         }
     }
 
     post {
         success {
-            echo 'Build and Docker image creation successful.'
+            echo 'Build and deployment successful.'
         }
         failure {
             echo 'Build failed.'
