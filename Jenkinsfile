@@ -40,8 +40,8 @@ pipeline {
             }
             steps {
                 echo 'Deploying to production...'
-                // Add your deployment commands here, e.g.:
-                // sh 'cp -r dist/* /var/www/html/'
+                // Add your deployment commands here
+                // Example: sh 'cp -r dist/* /var/www/html/'
             }
         }
     }
