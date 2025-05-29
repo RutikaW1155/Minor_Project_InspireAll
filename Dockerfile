@@ -1,27 +1,31 @@
-# Stage 1: build with Debian-based Node (glibc)
+# Stage 1: build
 FROM node:20-slim AS builder
 
-# where our app lives in the container
 WORKDIR /app
 
-# copy only package files & install deps
+# 1) Copy only the package files
 COPY package*.json ./
-RUN npm install
 
-# copy source & build
+# 2) Install dependencies (skip optional native packages)
+RUN npm install --no-optional
+
+# 3) Copy your source
 COPY . .
-RUN node --max-old-space-size=1024 node_modules/vite/bin/vite.js build
+
+# 4) Build using your npm script
+#    (this invokes `vite build` under the hood)
+RUN npm run build
 
 # Stage 2: runtime
 FROM node:20-slim
 
 WORKDIR /app
 
-# copy built assets only
+# 5) Copy only the built assets
 COPY --from=builder /app/dist ./dist
 
-# install only serve
-RUN npm install -g serve
+# 6) Install serve (no dev deps)
+RUN npm install -g --no-optional serve
 
 EXPOSE 3000
 
