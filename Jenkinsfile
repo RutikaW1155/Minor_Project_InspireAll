@@ -43,7 +43,7 @@ pipeline {
                     sh """
                         ssh -i \$KEY -o StrictHostKeyChecking=no ${DOCKER_USER}@${DOCKER_HOST_IP} '
                             docker rm -f inspire-container || true &&
-                            docker run -d -p 3000:4173 --name inspire-container inspire-app
+                            docker run -d -p 3000:3000 --name inspire-container inspire-app
                         '
                     """
                 }
