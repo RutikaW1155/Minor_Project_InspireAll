@@ -1,32 +1,23 @@
-# Stage 1: build
-FROM node:20-slim AS builder
+# Use an official Node.js image as the base image
+FROM node:18-alpine
 
+# Set the working directory in the container
 WORKDIR /app
 
-# 1) Copy only the package files
-COPY package*.json ./
+# Copy package.json and package-lock.json to the working directory
+COPY package.json ./
 
-# 2) Install dependencies (skip optional native packages)
-RUN npm install --no-optional
+# Install dependencies
+RUN npm install
 
-# 3) Copy your source
+# Copy the rest of the application code to the working directory
 COPY . .
 
-# 4) Build using your npm script
-#    (this invokes `vite build` under the hood)
+# Build the application
 RUN npm run build
 
-# Stage 2: runtime
-FROM node:20-slim
-
-WORKDIR /app
-
-# 5) Copy only the built assets
-COPY --from=builder /app/dist ./dist
-
-# 6) Install serve (no dev deps)
-RUN npm install -g --no-optional serve
-
+# Expose the port the app runs on
 EXPOSE 3000
 
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Start the application in preview mode
+CMD ["npm", "run", "preview"]
