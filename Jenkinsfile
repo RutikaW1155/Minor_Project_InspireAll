@@ -6,15 +6,15 @@ pipeline {
     }
 
     tools {
-        nodejs 'NodeJS_18'  // Ensure NodeJS 18 is installed in Jenkins tools
+        nodejs 'NodeJS_18'  // Must match your Jenkins NodeJS tool name
     }
 
     stages {
         stage('Clone Repo') {
-    steps {
-        git branch: 'main', url: 'https://github.com/RutikaW1155/Minor_Project_InspireAll.git'
-    }
-}
+            steps {
+                git branch: 'main', url: 'https://github.com/RutikaW1155/Minor_Project_InspireAll.git'
+            }
+        }
 
         stage('Install Dependencies') {
             steps {
@@ -24,7 +24,6 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // Skip if no tests are defined
                 sh 'npm run test || echo "No tests defined"'
             }
         }
@@ -41,8 +40,7 @@ pipeline {
             }
             steps {
                 echo 'Deploying to production...'
-                // Replace this with your deployment script
-                // For example, copying to Apache/Nginx directory:
+                // Add your deployment commands here, e.g.:
                 // sh 'cp -r dist/* /var/www/html/'
             }
         }
