@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/Gayatridandgal/Minor_Project_Inspireall.git'
+                git 'https://github.com/RutikaW1155/Minor_Project_InspireAll.git'
             }
         }
 
