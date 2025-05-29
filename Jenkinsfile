@@ -30,7 +30,7 @@ pipeline {
 
         stage('Build Vite App') {
             steps {
-                sh 'npm run build'
+                sh 'npx run build'
             }
         }
 
