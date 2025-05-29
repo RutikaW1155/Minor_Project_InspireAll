@@ -11,10 +11,10 @@ pipeline {
 
     stages {
         stage('Clone Repo') {
-            steps {
-                git 'https://github.com/RutikaW1155/Minor_Project_InspireAll.git'
-            }
-        }
+    steps {
+        git branch: 'main', url: 'https://github.com/RutikaW1155/Minor_Project_InspireAll.git'
+    }
+}
 
         stage('Install Dependencies') {
             steps {
