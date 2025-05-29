@@ -4,19 +4,16 @@ FROM node:20-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy only package files first (for layer caching)
+# Copy package files
 COPY package*.json ./
 
-# Remove any previously cached node_modules or lock file (optional safety)
-RUN rm -rf node_modules package-lock.json
-
-# Install dependencies cleanly (better for CI/CD)
-RUN npm ci
+# Install dependencies
+RUN npm install
 
 # Copy the rest of the project files
 COPY . .
 
-# Build the app
+# Build the app (limit memory usage to 1 GB)
 RUN node --max-old-space-size=1024 node_modules/vite/bin/vite.js build
 
 # Install serve to run the application
