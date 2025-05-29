@@ -4,20 +4,18 @@ FROM node:18-alpine
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package.json ./
+# Copy package files and install dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code to the working directory
+# Copy the rest of the application code
 COPY . .
 
 # Build the application
 RUN npm run build
 
-# Expose the port the app runs on
+# Expose the port your preview will run on
 EXPOSE 3000
 
-# Start the application in preview mode
-CMD ["npm", "run", "preview"]
+# Start the application in preview mode, binding to 0.0.0.0:3000
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "3000"]
