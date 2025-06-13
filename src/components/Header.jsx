@@ -20,8 +20,8 @@ function Header() {
       <nav className={`nav-links ${menuOpen ? 'open' : ''}`}>
         <a href="#features">Profile</a>
         <Link to="/BusinessInfo">Business Info</Link>
-        <a href="#community">Post</a>
-        <a href="#schemes">Schemes</a>
+{/*         <a href="#community">Post</a> */}
+{/*         <a href="#schemes">Schemes</a> */}
       </nav>
       <div className="translate-section">
         <GoogleTranslate />
