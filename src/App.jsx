@@ -11,6 +11,7 @@ import BusinessInfo from './components/BusinessInfo';
 import Footer from './components/Footer';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import resources from './components/resource';
 // import AppRouter from './router';
 // import DarkModeToggle from './components/DarkModeToggle';
 
