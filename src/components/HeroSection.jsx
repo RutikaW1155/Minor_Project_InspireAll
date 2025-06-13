@@ -6,7 +6,7 @@ function HeroSection() {
   return (
     <section class="hero-section">
     <div class="hero-content">
-      <h1 class="hero-title">Hello <span>with AI Automation</span></h1>
+      <h1 class="hero-title">Empowering Every Dream <span>with AI Automation</span></h1>
       <p class="hero-subtext">
         An AI-powered platform designed to empower rural entrepreneurs with personalized guidance, marketplace access, and financial literacy — in their own language.
       </p>
